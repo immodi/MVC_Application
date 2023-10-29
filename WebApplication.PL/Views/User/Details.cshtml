@@ -1,0 +1,15 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Users Details</h4>
+
+    <partial name="PartialViews/_DeleteDetailsPartialView" model="@Model" />
+
+    <a asp-action="Edit" class="btn btn-secondary">Edit</a>
+    <a asp-action="Index" class="btn btn-success">Back To List</a>
+</div>
+

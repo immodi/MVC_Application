@@ -1,0 +1,14 @@
+﻿@model EmployeeViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Employee</h1>
+<br />
+<br />
+<form asp-action="Edit">
+    
+    <partial name="PartialViews/_CreateEditPartialView" model="Model" />
+</form>
+
