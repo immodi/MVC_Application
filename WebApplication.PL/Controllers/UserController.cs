@@ -55,7 +55,7 @@ namespace WebApplication.PL.Controllers
                 return View(new List<UserViewModel>() { mappedUser });
             }
         }
-
+   
         // GET: Employee/Details/5
         public async Task<IActionResult> Details(string id, string viewName = "Details")
         {

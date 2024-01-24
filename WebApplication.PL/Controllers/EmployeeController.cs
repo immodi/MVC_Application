@@ -79,20 +79,35 @@ namespace WebApplication.PL.Controllers
             //    DepartmentId = employeeViewModel.DepartmentId
             //}; 
             #endregion
-
             var employee = _mapper.Map<EmployeeViewModel, Employee>(employeeViewModel);
             employee.ImageName = DocumentSettings.UploadImage(employeeViewModel.Image, "images");
-            if (ModelState.IsValid)
+            ModelState.Remove("ImageName");
+            if (employeeViewModel.DepartmentId != null)
             {
-                await unitOfWork.EmployeeRepository.Add(employee);
-                int output = await unitOfWork.Complete();
-                TempData["Message"] = "Employee has been created!";
-                return RedirectToAction(nameof(Index));
+                employee.Department = await unitOfWork.DepartmentRepository.GetById((int) employeeViewModel.DepartmentId);
+                ModelState.Remove("Department");
             }
-            return View(employee);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await unitOfWork.EmployeeRepository.Add(employee);
+                    int output = await unitOfWork.Complete();
+                    TempData["Message"] = "Employee has been created!";
+                    return RedirectToAction(nameof(Index));
+                }
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    await Console.Out.WriteLineAsync(error.ErrorMessage);
+                }
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+            return View(employeeViewModel);
         }
-
-        // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var employee = await unitOfWork.EmployeeRepository.GetById(id);

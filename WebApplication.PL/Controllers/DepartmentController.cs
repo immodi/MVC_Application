@@ -88,7 +88,7 @@ namespace WebApplication.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            return await Details(id, nameof(Edit));
+            return await Details(id, nameof(Delete));
         }
 
         [HttpPost]
